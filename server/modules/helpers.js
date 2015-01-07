@@ -1,10 +1,10 @@
 // Server helper functions
 
-var util = require('../../shared/utils');
+var activesupport = require('activesupport');
 
 exports.getErrorMessage = function(err, doc) {
   var message = '';
-  var doc = util.toCapitaliseCase(doc);
+  var doc = doc.humanize();
 
   if (err.code) {
     switch (err.code) {
