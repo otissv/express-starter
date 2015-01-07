@@ -1,17 +1,10 @@
-// Helper functions
+// Server helper functions
 
-exports.toCapitalise = function (string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-exports.toTitleCase = function (string)
-{
-  return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-}
+var util = require('../../shared/utils');
 
 exports.getErrorMessage = function(err, doc) {
   var message = '';
-  var doc = this.toCapitalise(doc);
+  var doc = util.toCapitaliseCase(doc);
 
   if (err.code) {
     switch (err.code) {

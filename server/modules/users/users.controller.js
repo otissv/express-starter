@@ -5,8 +5,6 @@ require('./users.model.js');
 var User = mongoose.model('User');
 var helper = require('../helpers');
 
-
-
 exports.read = function(req, res) {
   User.findById(req.params.user, function (err, user) {
     if (err) {
