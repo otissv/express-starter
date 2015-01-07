@@ -6,6 +6,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var glob = require('glob');
+var _ = require('lodash');
+
 
 var app = express();
 
@@ -21,10 +24,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
+//load routes
+var getRoutes = glob.sync('./server/modules/**/*routes.js');
+_(getRoutes).each(function(file) {
+  console.log(file)
+  require(path.resolve(file))(app);
+});
 
-//load modules
-var routes = require('./modules/core/core.routes')(app);
-var user = require('./modules/users/users.routes')(app);
+
 
 
 // catch 404 and forward to error handler
