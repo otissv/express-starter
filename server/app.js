@@ -13,7 +13,7 @@ var _ = require('lodash');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './modules/core/views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
