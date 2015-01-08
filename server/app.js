@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
-//load routes
+//require routes
 var getRoutes = glob.sync('./server/modules/**/*routes.js');
 _(getRoutes).each(function(file) {
   console.log(file)
