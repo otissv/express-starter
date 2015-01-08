@@ -8,10 +8,11 @@ var gutil = require('gulp-util');
 var nodemon = require('gulp-nodemon');
 var browserSync = require('browser-sync');
 var jshint =     require('gulp-jshint');
-
+var jest = require('gulp-jest');
 
 //config
 var config = {
+  tests: './__tests__/**.*.js',
   scripts: {
     client: './public/**/*.js',
     server: './server/**/*.js'
@@ -40,7 +41,7 @@ var onError = function (err) {
 
 // Lint scripts
 gulp.task('lintScripts', function () {
-  gulp.src(['gulpFile.js', config.scripts.client, config.scripts.server])
+  gulp.src(['gulpFile.js', config.tests, config.scripts.client, config.scripts.server])
   .pipe(jshint())
   .pipe(jshint.reporter('default'));
 });
@@ -82,10 +83,21 @@ gulp.task('browser-sync', ['nodemon'], function() {
   });
 });
 
+gulp.task('jest', function () {
+  return gulp.src('__tests__').pipe(jest({
+    testDirectoryName: '__tests__',
+    moduleFileExtensions: [
+      'js',
+      'json',
+      'jsx'
+    ]
+  }));
+});
+
 
 // Watch files for changes
 gulp.task('watch', function () {
-  gulp.watch([config.scripts.client, config.scripts.server], ['lintScripts']);
+  gulp.watch([config.scripts.client, config.tests. config.scripts.server], ['lintScripts']);
 });
 
 // Default gulp
@@ -97,3 +109,4 @@ gulp.task('default', [
 
 // Build app for distribution
 gulp.task('build', []);
+gulp.task('test', ['lintScripts','jest']);
