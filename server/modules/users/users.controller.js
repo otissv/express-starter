@@ -11,13 +11,13 @@ var User = mongoose.model('User');
 
 exports.read = function(req, res) {
   User.findById(req.params.user, function (err, user) {
-    // if (err) {
-    //   return res.status(400).send({
-    //     message: helper.getErrorMessage(err, 'user')
-    //   });
-    // } else {
+    if (err) {
+      return res.status(400).send({
+        message: helper.getErrorMessage(err, 'user')
+      });
+    } else {
       return res.json(user);
-    // }
+    }
   });
 };
 
