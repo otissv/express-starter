@@ -6,11 +6,6 @@
 var user = require ('./users.controller.js');
 
 module.exports = function userRoutes (app) {
-  app.route('/users')
-  .get(function coreIndex (req, res) {
-    res.render('index', { title: 'I am a user' });
-  });
-
   app.route('/users/new').post(user.create);
   app.route('/users/:user')
     .get(user.read)
