@@ -2,7 +2,7 @@
 
 var activesupport = require('activesupport');
 
-exports.getErrorMessage = function(err, doc) {
+exports.getErrorMessage = function getErrorMessage (err, doc) {
   var message = '';
   var doc = doc.humanize();
 

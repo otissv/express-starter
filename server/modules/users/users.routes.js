@@ -2,7 +2,7 @@
 
 var user = require ('./users.controller');
 
-module.exports = function(app) {
+module.exports = function userRoutes (app) {
   app.route('/users/new').post(user.create);
   app.route('/users/:user')
     .get(user.read)

@@ -5,7 +5,7 @@ require('./users.model.js');
 var User = mongoose.model('User');
 var helper = require('../helpers');
 
-exports.read = function(req, res) {
+exports.read = function userRead (req, res) {
   User.findById(req.params.user, function (err, user) {
     if (err) {
       return res.status(400).send({
@@ -17,7 +17,7 @@ exports.read = function(req, res) {
   });
 };
 
-exports.create = function(req, res) {
+exports.create = function userCreate(req, res) {
   var user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -35,7 +35,7 @@ exports.create = function(req, res) {
   });
 };
 
-exports.update = function(req, res) {
+exports.update = function userUpdate (req, res) {
   var user = req.user;
 
   user.save(function(err) {
@@ -49,7 +49,7 @@ exports.update = function(req, res) {
   });
 };
 
-exports.delete = function(req, res) {
+exports.delete = function userDelete (req, res) {
   var user = req.user;
 
   user.remove(function(err) {

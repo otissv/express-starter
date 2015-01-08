@@ -2,7 +2,7 @@
 
 var core = require('./core.controller');
 
-module.exports = function(app) {
+module.exports = function coreErrorStatus (app) {
   app.route('/').get(core.index);
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
