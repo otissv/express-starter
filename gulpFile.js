@@ -97,7 +97,7 @@ gulp.task('jest', function () {
 
 // Watch files for changes
 gulp.task('watch', function () {
-  gulp.watch([config.scripts.client, config.tests. config.scripts.server], ['lintScripts']);
+  gulp.watch([config.scripts.client, config.tests, config.scripts.server], ['lintScripts']);
 });
 
 // Default gulp
