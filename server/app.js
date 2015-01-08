@@ -1,5 +1,9 @@
+// Express config
+'use strict';
+
+// Dependencies
 var express = require('express');
-var db = require('./config/database.js')
+var db = require('./config/database.js');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -9,7 +13,7 @@ var mongoose = require('mongoose');
 var glob = require('glob');
 var _ = require('lodash');
 
-
+// Initialize express app
 var app = express();
 
 // view engine setup
@@ -24,11 +28,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
-//require routes
-var getRoutes = glob.sync('./server/modules/**/*routes.js');
-_(getRoutes).each(function(file) {
-  console.log(file)
-  require(path.resolve(file))(app);
-});
+// require routes
+var user = require('./modules/users/users.routes.js')(app);
+var core = require('./modules/core/core.routes.js')(app);
 
 module.exports = app;
