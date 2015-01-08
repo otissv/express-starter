@@ -1,9 +1,13 @@
 // Core routes
 
+'use strict';
+
+// Add controller
 var core = require('./core.controller');
 
 module.exports = function coreErrorStatus (app) {
   app.route('/').get(core.index);
+
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     var err = new Error('Not Found');

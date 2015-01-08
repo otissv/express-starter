@@ -1,5 +1,8 @@
 'use strict';
 
+// Database connection
+
+
 // Bring Mongoose into the project
 var mongoose = require( 'mongoose' );
 

@@ -1,10 +1,18 @@
 // Server helper functions
 
+'use strict';
+
 var activesupport = require('activesupport');
 
+// Replace charachers in string
+exports.stringReplace = function stringReplace(str, find, replace){
+  return str.replace(new RegExp(find, 'g'), replace);
+};
+
+//  Error messages
 exports.getErrorMessage = function getErrorMessage (err, doc) {
   var message = '';
-  var doc = doc.humanize();
+  doc = doc.humanize();
 
   if (err.code) {
     switch (err.code) {
@@ -22,7 +30,7 @@ exports.getErrorMessage = function getErrorMessage (err, doc) {
         message = err.errors[errName].message;
       }
     } else {
-      message = doc + ' does not exit'
+      message = doc + ' does not exit';
     }
   }
   return message;

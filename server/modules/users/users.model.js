@@ -1,6 +1,7 @@
 // User model
 
 'use strict';
+
 var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
@@ -20,4 +21,5 @@ var userSchema = new mongoose.Schema({
   },
   lastLogin: Date
 });
+
 mongoose.model('User', userSchema);

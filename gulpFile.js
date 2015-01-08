@@ -1,43 +1,52 @@
 'use strict';
 
+// Include gulp
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+
+// Include gulp plugins
 var nodemon = require('gulp-nodemon');
 var browserSync = require('browser-sync');
+var jshint =     require('gulp-jshint');
 
-var app = {
-  client: 'public/',
-  server: 'server/',
-  port: 3000
-}
 
+//config
 var config = {
+  scripts: {
+    client: './public/**/*.js',
+    server: './server/**/*.js'
+  },
   nodemon: {
     script: './bin/www',
     env: { 'NODE_ENV': 'development' },
-    watch: [app.server + '**/*.*']
+    watch: ['server/**/*.*']
   },
   browserSync: {
-    files:      [app.client + '**/*.*'],
-    port:       3333,
-    proxy:      'http://localhost:' + app.port,
-    browser:    ['google chrome'],
+    files: ['public/**/*.*'],
+    port: 3333,
+    proxy: 'http://localhost:' + 3000,
+    browser: ['google chrome'],
     reloadWait: 500
   }
 };
 
-var defaultTasks = [
-  'browser-sync',
-];
-var buildTasks = [];
 
-
+// Error handling
 var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
 
 
+// Lint scripts
+gulp.task('lintScripts', function () {
+  gulp.src(['gulpFile.js', config.scripts.client, config.scripts.server])
+  .pipe(jshint())
+  .pipe(jshint.reporter('default'));
+});
+
+
+// Start server
 gulp.task('nodemon', function(cb) {
   var nodemon = require('gulp-nodemon');
   var called = false;
@@ -63,8 +72,8 @@ gulp.task('nodemon', function(cb) {
 });
 
 
+//  Restart browser on file change
 gulp.task('browser-sync', ['nodemon'], function() {
-
   browserSync.init({
     files: config.browserSync.files,
     proxy: config.browserSync.proxy,
@@ -74,6 +83,17 @@ gulp.task('browser-sync', ['nodemon'], function() {
 });
 
 
-// Tasks
-gulp.task('default', defaultTasks);
-gulp.task('build', buildTasks);
+// Watch files for changes
+gulp.task('watch', function () {
+  gulp.watch([config.scripts.client, config.scripts.server], ['lintScripts']);
+});
+
+// Default gulp
+gulp.task('default', [
+  'lintScripts',
+  'browser-sync',
+  'watch'
+]);
+
+// Build app for distribution
+gulp.task('build', []);
