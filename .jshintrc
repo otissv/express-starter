@@ -32,9 +32,7 @@
     "afterEach",
     "it",
     "inject",
-    "expect",
-    "jest",
-    "dontMock"
+    "chai"
   ],
   "indent": 2, // Specify indentation spacing
   "devel": true, // Allow development statements e.g. `console.log();`.
