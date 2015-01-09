@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "gulp",
-    "test": "gulp test"
+    "test":  "gulp test",
+    "serve"  "gulp serve"
   },
   "dependencies": {
     "activesupport": "~0.1.1",
