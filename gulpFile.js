@@ -62,7 +62,7 @@ gulp.src = function() {
 gulp.task('lintScripts', function () {
   gulp.src(['./**/*.js', '!./node_modules/**/*.js'])
   .pipe(jshint('.jshintrc'))
-  .pipe(jshint.reporter('jshint-stylish'))
+  .pipe(jshint.reporter('jshint-stylish'));
 });
 
 
