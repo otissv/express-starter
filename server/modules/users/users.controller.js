@@ -8,8 +8,8 @@ var helper = require('../../helpers');
 require('./users.model.js');
 var User = mongoose.model('User');
 
-
-exports.read = function(req, res) {
+// Find user by id in database
+exports.read = function userRead(req, res) {
   User.findById(req.params.user, function (err, user) {
     if (err) {
       return res.status(400).send({
@@ -21,6 +21,7 @@ exports.read = function(req, res) {
   });
 };
 
+// Create new user in database
 exports.create = function userCreate(req, res) {
   var user = new User({
     name: req.body.name,
@@ -39,6 +40,7 @@ exports.create = function userCreate(req, res) {
   });
 };
 
+// Update user details
 exports.update = function userUpdate (req, res) {
   var user = req.user;
 
@@ -53,6 +55,8 @@ exports.update = function userUpdate (req, res) {
   });
 };
 
+
+// Delete user from database
 exports.delete = function userDelete (req, res) {
   var user = req.user;
 

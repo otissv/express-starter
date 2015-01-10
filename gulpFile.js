@@ -14,6 +14,8 @@ var plumber = require('gulp-plumber');
 var testem = require('gulp-testem');
 var mocha = require('gulp-mocha');
 var notify = require('gulp-notify');
+var batch = require('gulp-batch');
+var run = require('gulp-run');
 
 //config
 var config = {
@@ -123,14 +125,18 @@ gulp.task('testem', function (done) {
 });
 
 // Run server tests
-gulp.task('mocha', function () {
-  return gulp.src(config.tests, {read: false})
-  .pipe(mocha({reporter: 'nyan'}))
-  .on('error', notify.onError({
-    message: 'Error: <%= error.message %>',
-    sound: false // deactivate sound?
-  }));
-});
+// gulp.task('mocha', function (done) {
+//   return gulp.src(config.tests, {read: false})
+//   .pipe(mocha({reporter: 'spec'}))
+//   // .on('error', notify.onError({
+//   //   message: 'Error: <%= error.message %>',
+//   //   sound: false // deactivate sound?
+//   // }))
+// });
+
+// gulp.task('mocha', function (done) {
+//   run('npm test').exec();
+// });
 
 
 // Watch files for changes
@@ -138,22 +144,29 @@ gulp.task('watch', function () {
   gulp.watch(['./**/*.js', '!./node_modules/**/*.js'], ['lintScripts']);
 });
 
-// Run continus tests
-gulp.task('test', ['mocha'], function () {
-  gulp.watch([config.tests], ['mocha']);
-});
+// Watch script file for changes and run tests
+// gulp.task('test', ['mocha'], function () {
+//   gulp.watch([config.scripts, config.tests], batch(function (events, cb) {
+//     gulp.src([config.tests])
+//      .pipe(gulp.start('mocha'));
+//   }));
+// });
+
+//
+
+// Start server
+gulp.task('serve', [
+  'lintScripts',
+  'browser-sync'
+]);
+
+
+// Build app for distribution.
+gulp.task('build', []);
 
 
 // Default gulp task
 gulp.task('default', [
-  'lintScripts',
-  'watch'
-]);
-
-// Build app for distribution.
-gulp.task('build', []);
-gulp.task('serve', [
-  'lintScripts',
-  'mocha',
-  'browser-sync'
+'lintScripts',
+'watch'
 ]);

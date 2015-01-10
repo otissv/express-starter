@@ -4,7 +4,7 @@
 
 
 // Bring Mongoose into the project
-var mongoose = require( 'mongoose' );
+var mongoose = require( 'mongoose');
 
 /* Build the connection string.
 *  Change to point to database.
@@ -32,3 +32,5 @@ process.on('SIGINT', function() {
     process.exit(0);
   });
 });
+
+module.exports = mongoose;
