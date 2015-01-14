@@ -2,15 +2,54 @@
 
 'use strict';
 
-// Dependencies
+// =============================================================================
+// Dependencies.
+// =============================================================================
 var mongoose = require('mongoose');
+var passport = require('passport');
 var helper = require('../../helpers');
-require('./users.model.js');
-var User = mongoose.model('User');
+var User = require('./users.model.js');
+
+
+// =============================================================================
+// Methods
+// =============================================================================
 
 // Find user by id in database
-exports.read = function userRead(req, res) {
+exports.findUser = function (req, res) {
   User.findById(req.params.user, function (err, user) {
+    if (user !== null) {
+      return res.json(user);
+    } else {
+      return res.status(400).send({
+        message: helper.getErrorMessage(err, 'user')
+      });
+    }
+  });
+};
+
+
+// Update user details
+exports.updateUser = function(req, res) {
+  var user = req.user;
+
+  user.save(function(err) {
+    if (err) {
+      return res.send(400, {
+        message: helper.getErrorMessage(err, 'user')
+      });
+    } else {
+      return res.json(user);
+    }
+  });
+};
+
+
+// Delete user from database
+exports.deleteUser = function(req, res) {
+  var user = req.user;
+
+  user.remove(function(err) {
     if (err) {
       return res.status(400).send({
         message: helper.getErrorMessage(err, 'user')
@@ -21,52 +60,31 @@ exports.read = function userRead(req, res) {
   });
 };
 
-// Create new user in database
-exports.create = function userCreate(req, res) {
-  var user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    modified: Date.now(),
-    lastLogin: Date.now()
-  });
-  user.save (function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: helper.getErrorMessage(err, 'user')
-      });
-    } else {
-      res.json(user);
-    }
-  });
+// Sends sign up page
+exports.signupUser = function (req, res) {
+  return res.render('signup', { title: 'Sign up' });
 };
 
-// Update user details
-exports.update = function userUpdate (req, res) {
-  var user = req.user;
+// Signs user up
+exports.processSigningUpUser = passport.authenticate('local-signup', {
+  successRedirect : '/home',
+  failureRedirect : '/signup',
+  failureFlash : true
+});
 
-  user.save(function(err) {
-    if (err) {
-      return res.send(400, {
-        message: helper.getErrorMessage(err, 'user')
-      });
-    } else {
-      res.json(user);
-    }
-  });
+// Sends sign in page
+exports.signinUser = function (req, res) {
+  return res.render('signin', { title: 'Sign in' });
 };
 
-
-// Delete user from database
-exports.delete = function userDelete (req, res) {
-  var user = req.user;
-
-  user.remove(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: helper.getErrorMessage(err, 'user')
-      });
-    } else {
-      res.json(user);
-    }
+// Signs user in
+exports.processSigningInUser = passport.authenticate('local-signin', {
+    successRedirect: '/home',
+    failureRedirect: '/signup',
+    failureFlash: true
   });
+
+exports.signoutUser = function(req, res) {
+  req.logout();
+  res.redirect('/');
 };

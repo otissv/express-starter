@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  - if (messages)
+    div #{messages}
+
+
+  h1= title
+  form(action='/signup', method='post')
+    div
+      label Username
+      input(type='text', name='username')
+    div
+      label Password
+      input(type='password', name='password')
+    button(type='submit') Signup

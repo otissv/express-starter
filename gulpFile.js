@@ -19,12 +19,12 @@ var run = require('gulp-run');
 
 //config
 var config = {
-  tests: './__tests__/**/*.js',
-  testem: './__tests__/client/*.js',
+  tests: './tests/**/*.js',
+  testem: './tests/client/*.js',
   scripts: [
     './public/**/*.js',
     './server/**/*.js',
-    './__tests__/**/*.js'
+    './tests/**/*.js'
   ],
   nodemon: {
     script: './bin/www',
@@ -42,11 +42,6 @@ var config = {
 
 
 // Error handling
-// var onError = function (err) {
-//   gutil.beep();
-//   console.log(err);
-// };
-
 var gulp_src = gulp.src;
 gulp.src = function() {
   return gulp_src.apply(gulp, arguments)
@@ -125,23 +120,29 @@ gulp.task('testem', function (done) {
 });
 
 // Run server tests
-// gulp.task('mocha', function (done) {
-//   return gulp.src(config.tests, {read: false})
-//   .pipe(mocha({reporter: 'spec'}))
-//   // .on('error', notify.onError({
-//   //   message: 'Error: <%= error.message %>',
-//   //   sound: false // deactivate sound?
-//   // }))
-// });
+gulp.task('mocha', function (done) {
+  run('mongo database/test.db.reset.js').exec();
+  gulp.src(config.tests, {read: false})
+  .pipe(mocha({reporter: 'spec'}))
+  .on('error', notify.onError({
+    message: 'Error: <%= error.message %>',
+    sound: false // deactivate sound?
+  }))
+  .exit();
+});
 
-// gulp.task('mocha', function (done) {
-//   run('npm test').exec();
-// });
+gulp.task('dbClean', function(done) {
+  run('mongo database/test.db.reset.js').exec();
+});
+
+gulp.task('test', function (done) {
+  run('mocha tests/**/*.js --watch').exec();
+});
 
 
 // Watch files for changes
 gulp.task('watch', function () {
-  gulp.watch(['./**/*.js', '!./node_modules/**/*.js'], ['lintScripts']);
+  gulp.watch(['./server/**/*.js'], ['lintScripts']);
 });
 
 // Watch script file for changes and run tests
@@ -167,6 +168,6 @@ gulp.task('build', []);
 
 // Default gulp task
 gulp.task('default', [
-'lintScripts',
-'watch'
+  'lintScripts',
+  'watch'
 ]);

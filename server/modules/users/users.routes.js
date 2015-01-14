@@ -2,16 +2,24 @@
 
 'use strict';
 
-// Add controller
+// =============================================================================
+// Dependencies.
+// =============================================================================
 var user = require ('./users.controller.js');
 
+
+// =============================================================================
+// Methods
+// =============================================================================
+
 module.exports = function userRoutes (app) {
-  app.route('/users/new').post(user.create);
   app.route('/users/:user')
-    .get(user.read)
-    .put(user.update)
-    .delete(user.delete);
-  // app.route('/auth/signup').post(users.signup);
-  // app.route('/auth/signin').post(users.signin);
-  // app.route('/auth/signout').get(users.signout);
+    .get(user.findUser)
+    .put(user.updateUser)
+    .delete(user.deleteUser);
+  app.route('/signup').get(user.signupUser);
+  app.route('/signup').post(user.processSigningUpUser);
+  app.route('/signin').get(user.signinUser);
+  app.route('/signin').post(user.processSigningInUser);
+  app.route('/signout').get(user.signoutUser);
 };
