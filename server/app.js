@@ -76,6 +76,9 @@ app.use(passport.session());
 // Flash messages stored in session
 app.use(flash());
 
+// Disable x-powered-by
+app.disable('x-powered-by');
+
 
 // =============================================================================
 // Routes
