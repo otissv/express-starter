@@ -25,19 +25,7 @@ var config = {
     './public/**/*.js',
     './server/**/*.js',
     './tests/**/*.js'
-  ],
-  nodemon: {
-    script: './bin/www',
-    env: { 'NODE_ENV': 'development' },
-    watch: 'server/**/*.*'
-  },
-  browserSync: {
-    files: ['public/**/*.*'],
-    port: 3333,
-    proxy: 'http://localhost:' + 3000,
-    browser: ['google chrome'],
-    reloadWait: 500
-  }
+  ]
 };
 
 
@@ -56,22 +44,21 @@ gulp.src = function() {
 
 
 // Lint scripts
-gulp.task('lintScripts', function () {
+gulp.task('lint', function () {
   gulp.src(['./**/*.js', '!./node_modules/**/*.js'])
   .pipe(jshint('.jshintrc'))
   .pipe(jshint.reporter('jshint-stylish'));
 });
 
 
-// Start server
 gulp.task('nodemon', function(cb) {
   var nodemon = require('gulp-nodemon');
   var called = false;
 
   return nodemon({
-    script: config.nodemon.script,
-    env: config.nodemon.env,
-    watch: config.nodemon.watch
+    script: './bin/www',
+    env: { 'NODE_ENV': 'development' },
+    watch: 'server/**/*.*'
   })
   .on('start', function onStart() {
     if (!called) {
@@ -84,7 +71,7 @@ gulp.task('nodemon', function(cb) {
       browserSync.reload({
         stream: false
       });
-    }, config.browserSync.reloadWait);
+    }, 500);
   });
 });
 
@@ -92,10 +79,10 @@ gulp.task('nodemon', function(cb) {
 // Restart browser on file change
 gulp.task('browser-sync', ['nodemon'], function() {
   browserSync.init({
-    files: config.browserSync.files,
-    proxy: config.browserSync.proxy,
-    port: config.browserSync.port,
-    browser: config.browserSync.browser
+    files: ['public/**/*.*'],
+    proxy: 'http://localhost:' + 3000,
+    port: 3333,
+    browser: ['google chrome']
   });
 });
 
@@ -156,10 +143,7 @@ gulp.task('watch', function () {
 //
 
 // Start server
-gulp.task('serve', [
-  'lintScripts',
-  'browser-sync'
-]);
+gulp.task('serve', ['browser-sync']);
 
 
 // Build app for distribution.
@@ -167,7 +151,4 @@ gulp.task('build', []);
 
 
 // Default gulp task
-gulp.task('default', [
-  'lintScripts',
-  'watch'
-]);
+gulp.task('default', ['lint', 'watch']);

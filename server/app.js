@@ -18,22 +18,24 @@ var passport = require('passport');
 var compress = require('compression');
 var mogan = require('morgan');
 var flash = require('connect-flash');
-
-// Initialize express app
-var app = express();
+var swig = require('swig');
 
 // =============================================================================
 // Configuration
 // =============================================================================
 
+// Initialize express app
+var app = express();
+
 // Bootstrap passport config
 require('./config/passport')(passport);
 
+// View engine setup
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+
 // Location of view folders
 app.set('views', path.join(__dirname, './modules/core/views'));
-
-// View engine setup
-app.set('view engine', 'jade');
 
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -83,26 +85,18 @@ app.use(flash());
 var user = require('./modules/users/users.routes.js')(app, passport);
 var core = require('./modules/core/core.routes.js')(app, passport);
 
-  // catch 404 and forward to error handler
+  // 404 catch-all handler
   app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    res.status(404);
+    res.render('404');
   });
 
-  // error handlers
-
-  // development error handler
-  // will print stacktrace
-  if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-      res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        error: err
-      });
-    });
-  }
+  // 505 catch-all handler
+  app.use(function(req, res, next) {
+    console.error(err.stack);
+    res.status(505);
+    res.render('505');
+  });
 
   // production error handler
   // no stacktraces leaked to user
