@@ -19,6 +19,8 @@ var compress = require('compression');
 var mogan = require('morgan');
 var flash = require('connect-flash');
 var swig = require('swig');
+var credentials = require('../.credentials.js');
+
 
 // =============================================================================
 // Configuration
@@ -65,7 +67,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 
 // Session secret
-app.use(session({ secret: 'SECRET' }));
+app.use(session({ secret: credentials.sessionSecret }));
 
 // Initialise authentication
 app.use(passport.initialize());
