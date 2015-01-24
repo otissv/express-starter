@@ -20,7 +20,7 @@ var mogan = require('morgan');
 var flash = require('req-flash');
 var swig = require('swig');
 var credentials = require('../.credentials.js');
-
+var methodOverride = require('method-override');
 
 // =============================================================================
 // Configuration
@@ -51,6 +51,9 @@ app.use(bodyParser.json());
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+// Over ride request header
+app.use(methodOverride());
 // Should be placed before express.static
 app.use(compress({
   filter: function(req, res) {
