@@ -29,14 +29,14 @@ var methodOverride = require('method-override');
 var app = express();
 
 // Bootstrap passport config
-require('./modules/users/user.auth.js')(passport);
+require('./users/user.auth.js')(passport);
 
 // View engine setup
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
 // Location of view folders
-app.set('views', path.join(__dirname, './modules/core/views'));
+app.set('views', path.join(__dirname, './core/views'));
 
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -101,8 +101,8 @@ app.disable('x-powered-by');
 // =============================================================================
 
 // Order is important!
-var user = require('./modules/users/users.routes.js')(app, passport);
-var core = require('./modules/core/core.routes.js')(app, passport);
+var user = require('./users/users.routes.js')(app, passport);
+var core = require('./core/core.routes.js')(app, passport);
 
 // 404 catch-all handler
 app.use(function(req, res, next) {

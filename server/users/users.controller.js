@@ -7,7 +7,7 @@
 // =============================================================================
 var mongoose = require('mongoose');
 var passport = require('passport');
-var helper = require('../../helpers');
+var helper = require('../helpers');
 var User = require('./users.model.js');
 
 
