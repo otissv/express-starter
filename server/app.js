@@ -16,7 +16,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var compress = require('compression');
-var mogan = require('morgan');
 var flash = require('req-flash');
 var swig = require('swig');
 var credentials = require('../.credentials.js');
@@ -43,7 +42,16 @@ app.set('views', path.join(__dirname, './modules/core/views'));
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Application logger
-app.use(logger('dev'));
+switch (app.get('env')) {
+  case 'development':
+    app.use(require('morgan')('dev'));
+    break;
+  case 'production':
+    app.use(require('experss-logger')({
+      path: __dirname + '/log/requests.log'
+    }));
+    break;
+}
 
 // Parse application/json
 app.use(bodyParser.json());
