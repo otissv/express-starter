@@ -3,3 +3,4 @@ dist
 secret.js
 public/libgs
 npm-debug.log
+.credentials.js

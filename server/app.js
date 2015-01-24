@@ -17,7 +17,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var compress = require('compression');
 var mogan = require('morgan');
-var flash = require('connect-flash');
+var flash = require('req-flash');
 var swig = require('swig');
 var credentials = require('../.credentials.js');
 
@@ -67,7 +67,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 
 // Session secret
-app.use(session({ secret: credentials.sessionSecret }));
+app.use(session({
+  secret: credentials.sessionSecret,
+  saveUninitialized: true,
+  resave: true
+}));
 
 // Initialise authentication
 app.use(passport.initialize());
@@ -76,7 +80,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Flash messages stored in session
-app.use(flash());
+app.use(flash({ locals: 'flash' }));
 
 // Disable x-powered-by
 app.disable('x-powered-by');
@@ -89,28 +93,19 @@ app.disable('x-powered-by');
 var user = require('./modules/users/users.routes.js')(app, passport);
 var core = require('./modules/core/core.routes.js')(app, passport);
 
-  // 404 catch-all handler
-  app.use(function(req, res, next) {
-    res.status(404);
-    res.render('404');
-  });
+// 404 catch-all handler
+app.use(function(req, res, next) {
+  res.status(404);
+  res.render('404');
+});
 
-  // 505 catch-all handler
-  app.use(function(req, res, next) {
-    console.error(err.stack);
-    res.status(505);
-    res.render('505');
-  });
+// 505 catch-all handler
+app.use(function(req, res, next) {
+  console.error(err.stack);
+  res.status(505);
+  res.render('505');
+});
 
-  // production error handler
-  // no stacktraces leaked to user
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: {}
-    });
-  });
 // =============================================================================
 // Expose app
 // =============================================================================

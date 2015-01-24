@@ -66,11 +66,24 @@ exports.signupUser = function (req, res) {
 };
 
 // Signs user up
-exports.processSigningUpUser = passport.authenticate('local-signup', {
-  successRedirect : '/home',
-  failureRedirect : '/signup',
-  failureFlash : true
-});
+exports.processSigningUpUser = function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash('type', 'danger');
+      req.flash('message', 'Username or password is incorrect');
+      return res.redirect('/signup');
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/home');
+    });
+  })(req, res, next);
+};
 
 // Sends sign in page
 exports.signinUser = function (req, res) {
@@ -78,11 +91,24 @@ exports.signinUser = function (req, res) {
 };
 
 // Signs user in
-exports.processSigningInUser = passport.authenticate('local-signin', {
-    successRedirect: '/home',
-    failureRedirect: '/signup',
-    failureFlash: true
-  });
+exports.processSigningInUser = function(req, res, next) {
+  passport.authenticate('local-signin', function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash('type', 'danger');
+      req.flash('message', 'Username or password is incorrect');
+      return res.redirect('/signup');
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/home');
+    });
+  })(req, res, next);
+};
 
 exports.signoutUser = function(req, res) {
   req.logout();
