@@ -30,7 +30,7 @@ var credentials = require('../.credentials.js');
 var app = express();
 
 // Bootstrap passport config
-require('./config/passport')(passport);
+require('./modules/users/user.auth.js')(passport);
 
 // View engine setup
 app.engine('html', swig.renderFile);
@@ -80,7 +80,6 @@ app.use(flash());
 
 // Disable x-powered-by
 app.disable('x-powered-by');
-
 
 // =============================================================================
 // Routes
