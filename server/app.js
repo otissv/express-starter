@@ -2,11 +2,18 @@
 'use strict';
 
 // =============================================================================
-// Dependencies.
+// Application.
 // =============================================================================
 
 var express = require('express');
-var db = require('../database/connection.js');
+var app = express();
+var configLocals = require('../config/locals.js')(app);
+var db = require('../database/connection.js')(app.locals.db);
+
+
+// =============================================================================
+// Middleware
+// =============================================================================
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -20,13 +27,6 @@ var flash = require('req-flash');
 var swig = require('swig');
 var credentials = require('../.credentials.js');
 var methodOverride = require('method-override');
-
-// =============================================================================
-// Configuration
-// =============================================================================
-
-// Initialize express app
-var app = express();
 
 // Bootstrap passport config
 require('./users/user.auth.js')(passport);
@@ -52,20 +52,6 @@ switch (app.get('env')) {
     }));
     break;
 }
-
-
-// Application local varibles
-switch (app.get('env')) {
-  case 'development':
-    var config = require('../config/development.js');
-    break;
-  case 'production':
-    var config = require('../config/production.js');
-    break;
-}
-app.locals.title = config.title;
-app.locals.description = config.description;
-
 
 // Parse application/json
 app.use(bodyParser.json());
