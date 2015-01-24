@@ -3,9 +3,7 @@
 'use strict';
 
 exports.index = function(req, res) {
-  res.render('index', {
-    title: 'Express, Mongodb, API Starter',
-  });
+  res.render('index');
 };
 
 exports.home = function(req, res) {
