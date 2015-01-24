@@ -1,4 +1,7 @@
-// Express config
+// sever/app.js
+
+// Express application
+
 'use strict';
 
 // =============================================================================

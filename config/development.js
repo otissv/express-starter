@@ -1,4 +1,7 @@
-// cofig/development.js
+// config/development.js
+
+// Configuration development application variables
+
 'use strict';
 
 // =============================================================================

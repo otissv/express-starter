@@ -1,5 +1,7 @@
 // server/module/user/user.auth.js
 
+// User authentication
+
 'use strict';
 
 // =============================================================================

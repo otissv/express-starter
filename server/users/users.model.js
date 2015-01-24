@@ -1,3 +1,5 @@
+// sever/user/user.model.js
+
 // User model
 
 'use strict';

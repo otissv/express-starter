@@ -1,5 +1,7 @@
 // database/connection.js
 
+// Database connection
+
 'use strict';
 
 module.exports = function(dbURI) {

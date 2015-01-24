@@ -1,4 +1,7 @@
-// Server helper functions
+// server/helpers.js
+
+// Helper Utilities
+
 'use strict';
 
 // Dependencies

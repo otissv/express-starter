@@ -1,7 +1,16 @@
-// sever/env/all
+// config/all.js
 
+// Configuration variable
+
+'use strict';
+// =============================================================================
+// Dependencies.
+// =============================================================================
 var secret = require('../.credentials.js');
 
+// =============================================================================
+// Configuration
+// =============================================================================
 module.exports = {
   title: 'Express Starter',
   description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',

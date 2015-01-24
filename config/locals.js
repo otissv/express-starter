@@ -1,5 +1,9 @@
 // config/locals.js
 
+// local application variable
+
+'use strict';
+
 module.exports = function(app) {
   switch (app.get('env')) {
     case 'development':
