@@ -4,12 +4,12 @@
 
 'use strict';
 
-module.exports = function(dbURI) {
+module.exports = function(dbURI, dbOpts) {
   // Bring Mongoose into the project
   var mongoose = require( 'mongoose');
 
   // Create the database connection
-  mongoose.connect(dbURI);
+  mongoose.connect(dbURI, dbOpts);
 
   // Event handlers
   mongoose.connection.on('connected', function () {
@@ -29,4 +29,4 @@ module.exports = function(dbURI) {
       process.exit(0);
     });
   });
-}
+};

@@ -7,12 +7,12 @@
 // =============================================================================
 // Dependencies.
 // =============================================================================
-var configAll = require('./all.js')
+var all = require('./all.js');
 
 // =============================================================================
 // Configuration
 // =============================================================================
 module.exports = {
-  title:  configAll.title + '- Development Environment',
-  db: 'mongodb://127.0.0.1:27017/test'
-}
+  title:  all.title + '- Development Environment',
+  db: all.db
+};

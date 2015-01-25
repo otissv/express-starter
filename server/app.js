@@ -11,7 +11,7 @@
 var express = require('express');
 var app = express();
 var configLocals = require('../config/locals.js')(app);
-var db = require('../database/connection.js')(app.locals.db);
+var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.opts);
 
 
 // =============================================================================
@@ -56,20 +56,6 @@ switch (app.get('env')) {
     break;
 }
 
-
-// Application local varibles
-switch (app.get('env')) {
-  case 'development':
-    var config = require('../config/development.js');
-    break;
-  case 'production':
-    var config = require('../config/production.js');
-    break;
-}
-
-app.locals.title = config.title;
-app.locals.description = config.description;
-
 // Parse application/json
 app.use(bodyParser.json());
 
@@ -94,7 +80,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Read cookies (needed for auth)
 app.use(cookieParser());
 
-// Session secret
+// Session
 app.use(session({
   secret: credentials.sessionSecret,
   saveUninitialized: true,
@@ -107,7 +93,7 @@ app.use(passport.initialize());
 // persistent login sessions
 app.use(passport.session());
 
-// Flash messages stored in session
+// Flash messages
 app.use(flash({ locals: 'flash' }));
 
 // Disable x-powered-by
@@ -128,7 +114,7 @@ app.use(function(req, res, next) {
 });
 
 // 505 catch-all handler
-app.use(function(req, res, next) {
+app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(505);
   res.render('505');

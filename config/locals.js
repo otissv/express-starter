@@ -5,15 +5,18 @@
 'use strict';
 
 module.exports = function(app) {
+  var config;
   switch (app.get('env')) {
     case 'development':
-      var config = require('../config/development.js');
+      config = require('../config/development.js');
       break;
     case 'production':
-      var config = require('../config/production.js');
+      config = require('../config/production.js');
       break;
+    default:
+      throw new Error('Unknow exection Enviorment:');
   }
   app.locals.title = config.title;
   app.locals.description = config.description;
   app.locals.db = config.db;
-}
+};
