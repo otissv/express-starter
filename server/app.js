@@ -5,7 +5,7 @@
 'use strict';
 
 // =============================================================================
-// Application.
+// Configuration
 // =============================================================================
 
 var express = require('express');
@@ -83,6 +83,7 @@ app.use(cookieParser());
 // Session
 app.use(session({
   secret: credentials.sessionSecret,
+  store: require('mongoose-session')(mongoose),
   saveUninitialized: true,
   resave: true
 }));
