@@ -134,7 +134,8 @@ gulp.task('watch', function () {
     './*.js',
     './config/*.js',
     './database/*.js',
-    './server/*.js'
+    './server/*.js',
+    './lib/*.js'
     ],
     ['lint']);
 });

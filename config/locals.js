@@ -16,6 +16,8 @@ module.exports = function(app) {
     default:
       throw new Error('Unknow exection Enviorment:');
   }
+  app.locals.baseURL = config.baseURL;
+  app.locals.port = config.port;
   app.locals.title = config.title;
   app.locals.description = config.description;
   app.locals.db = config.db;
