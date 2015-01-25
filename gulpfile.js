@@ -14,8 +14,7 @@ var plumber = require('gulp-plumber');
 var testem = require('gulp-testem');
 var mocha = require('gulp-mocha');
 var notify = require('gulp-notify');
-var batch = require('gulp-batch');
-var run = require('gulp-run');
+
 
 //config
 var config = {
@@ -48,7 +47,7 @@ gulp.task('lint', function () {
   gulp.src(['./**/*.js', '!./node_modules/**/*.js'])
   .pipe(jshint('.jshintrc'))
   .pipe(jshint.reporter('jshint-stylish'));
-  console.log('=========================================================');
+  console.log('==============================================================');
 });
 
 
@@ -108,24 +107,24 @@ gulp.task('testem', function (done) {
 });
 
 // Run server tests
-gulp.task('mocha', function (done) {
-  run('mongo database/test.db.reset.js').exec();
-  gulp.src(config.tests, {read: false})
-  .pipe(mocha({reporter: 'spec'}))
-  .on('error', notify.onError({
-    message: 'Error: <%= error.message %>',
-    sound: false // deactivate sound?
-  }))
-  .exit();
-});
+// gulp.task('mocha', function (done) {
+//   run('mongo database/test.db.reset.js').exec();
+//   gulp.src(config.tests, {read: false})
+//   .pipe(mocha({reporter: 'spec'}))
+//   .on('error', notify.onError({
+//     message: 'Error: <%= error.message %>',
+//     sound: false // deactivate sound?
+//   }))
+//   .exit();
+// });
 
-gulp.task('dbClean', function(done) {
-  run('mongo database/test.db.reset.js').exec();
-});
-
-gulp.task('test', function (done) {
-  run('mocha tests/**/*.js --watch').exec();
-});
+// gulp.task('dbClean', function(done) {
+//   run('mongo database/test.db.reset.js').exec();
+// });
+//
+// gulp.task('test', function (done) {
+//   run('mocha tests/**/*.js --watch').exec();
+// });
 
 
 // Watch files for changes
