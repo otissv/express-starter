@@ -12,9 +12,6 @@ var jshint = require('gulp-jshint');
 var jshintStylish = require('jshint-stylish');
 var plumber = require('gulp-plumber');
 var testem = require('gulp-testem');
-var mocha = require('gulp-mocha');
-var notify = require('gulp-notify');
-
 
 //config
 var config = {
@@ -106,26 +103,6 @@ gulp.task('testem', function (done) {
   .pipe(testem({configFile: 'testem.json'}));
 });
 
-// Run server tests
-// gulp.task('mocha', function (done) {
-//   run('mongo database/test.db.reset.js').exec();
-//   gulp.src(config.tests, {read: false})
-//   .pipe(mocha({reporter: 'spec'}))
-//   .on('error', notify.onError({
-//     message: 'Error: <%= error.message %>',
-//     sound: false // deactivate sound?
-//   }))
-//   .exit();
-// });
-
-// gulp.task('dbClean', function(done) {
-//   run('mongo database/test.db.reset.js').exec();
-// });
-//
-// gulp.task('test', function (done) {
-//   run('mocha tests/**/*.js --watch').exec();
-// });
-
 
 // Watch files for changes
 gulp.task('watch', function () {
@@ -140,15 +117,6 @@ gulp.task('watch', function () {
     ['lint']);
 });
 
-// Watch script file for changes and run tests
-// gulp.task('test', ['mocha'], function () {
-//   gulp.watch([config.scripts, config.tests], batch(function (events, cb) {
-//     gulp.src([config.tests])
-//      .pipe(gulp.start('mocha'));
-//   }));
-// });
-
-//
 
 // Start server
 gulp.task('serve', ['browser-sync']);

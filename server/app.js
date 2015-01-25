@@ -30,6 +30,8 @@ var flash = require('req-flash');
 var swig = require('swig');
 var credentials = require('../.credentials.js');
 var methodOverride = require('method-override');
+var store = require('mongoose-session')(mongoose);
+var csrf = require('csurf');
 
 // Bootstrap passport config
 require('./users/user.auth.js')(passport);
@@ -83,7 +85,7 @@ app.use(cookieParser());
 // Session
 app.use(session({
   secret: credentials.sessionSecret,
-  store: require('mongoose-session')(mongoose),
+  store: store,
   saveUninitialized: true,
   resave: true
 }));
@@ -100,6 +102,13 @@ app.use(flash({ locals: 'flash' }));
 // Disable x-powered-by
 app.disable('x-powered-by');
 
+// Cross-site request forgery
+app.use(csrf());
+app.use(function(req, res, next) {
+  res.locals._csrfToken = req.csrfToken();
+  next();
+});
+
 // =============================================================================
 // Routes
 // =============================================================================
@@ -114,11 +123,11 @@ app.use(function(req, res, next) {
   res.render('404');
 });
 
-// 505 catch-all handler
+// 500 catch-all handler
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.status(505);
-  res.render('505');
+  res.status(500);
+  res.render('500');
 });
 
 // =============================================================================
