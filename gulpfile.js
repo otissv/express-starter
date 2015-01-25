@@ -48,6 +48,7 @@ gulp.task('lint', function () {
   gulp.src(['./**/*.js', '!./node_modules/**/*.js'])
   .pipe(jshint('.jshintrc'))
   .pipe(jshint.reporter('jshint-stylish'));
+  console.log('=========================================================');
 });
 
 
@@ -129,7 +130,14 @@ gulp.task('test', function (done) {
 
 // Watch files for changes
 gulp.task('watch', function () {
-  gulp.watch(['./server/**/*.js'], ['lintScripts']);
+  gulp.watch(
+    [
+    './*.js',
+    './config/*.js',
+    './database/*.js',
+    './server/*.js'
+    ],
+    ['lint']);
 });
 
 // Watch script file for changes and run tests
