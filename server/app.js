@@ -31,8 +31,7 @@ var swig = require('swig');
 var secret = require('../config/secret.js');
 var methodOverride = require('method-override');
 var store = require('mongoose-session')(mongoose);
-var csrf = require('csurf');
-var helmet = require('helmet');
+
 
 // Bootstrap passport config
 require('./users/user.auth.js')(passport);
@@ -101,64 +100,16 @@ app.use(passport.session());
 // Flash messages
 app.use(flash({ locals: 'flash' }));
 
+// security
+require('../config/security.js');
 
 // =============================================================================
-// Security
-// =============================================================================
-
-// Disable x-powered-by
-app.disable('x-powered-by');
-
-// Cross-site request forgery
-app.use(csrf());
-app.use(function(req, res, next) {
-  res.locals._csrfToken = req.csrfToken();
-  next();
-});
-
-
-// Content Security Policy
-app.use(helmet.csp({
-  defaultSrc: ["'self'"],
-  scriptSrc: ['*.google-analytics.com'],
-  styleSrc: ["'unsafe-inline'"],
-  imgSrc: ['*.google-analytics.com'],
-  connectSrc: ["'none'"],
-  fontSrc: [],
-  objectSrc: [],
-  mediaSrc: [],
-  frameSrc: []
-}));
-
-// X-XSS-Protection
-app.use(helmet.xssFilter());
-
-// X-Frame: Deny
-app.use(helmet.xframe());
-
-// Strict-Transport-Security
-app.use(helmet.hsts({
-  maxAge: 7776000000,
-  includeSubdomains: true
-}));
-
-// Sniff mimetypes
-app.use(helmet.noSniff());
-
-// IE, restrict untrusted HTML
-app.use(helmet.ieNoOpen());
-
-// enforce https
-// app.use(require('express-enforces-ssl'));
-
-
-// =============================================================================
-// Routes
+// Routes in order of priority
 // =============================================================================
 
 // Order is important!
-var user = require('./users/users.routes.js')(app, passport);
-var core = require('./core/core.routes.js')(app, passport);
+require('./users/users.routes.js')(app, passport);
+require('./core/core.routes.js')(app, passport);
 
 
 // =============================================================================
