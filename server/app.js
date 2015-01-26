@@ -5,36 +5,36 @@
 'use strict';
 
 // =============================================================================
-// Configuration
+// Dependencies
 // =============================================================================
 
 var express = require('express');
-var app = express();
-var configLocals = require('../config/locals.js')(app);
-var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.opts);
 var mongoose = require('mongoose');
 var passport = require('passport');
-var secret = require('../config/secret.js');
-
-// =============================================================================
-// Middleware
-// =============================================================================
-var path = require('path');
 var favicon = require('serve-favicon');
+var path = require('path');
 
-var bodyParser = require('body-parser');
+// =============================================================================
+// Configuration
+// =============================================================================
 
-var compress = require('compression');
-var swig = require('swig');
+var app = express();
 
-var methodOverride = require('method-override');
+// Applicaion local variables
+var locals = require('../config/locals.js')(app);
 
+// Database connection
+var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.opts);
 
 // Authentication
 var auth = require('./users/user.auth.js')(passport);
 
 // Application logger
-var logger = require('../config/loger.js');
+var logger = require('../config/logger.js');
+
+
+var swig = require('swig');
+
 
 // View engine setup
 app.engine('html', swig.renderFile);
@@ -46,16 +46,7 @@ app.set('views', path.join(__dirname, './core/views'));
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
-// Parse application/json
-app.use(bodyParser.json());
-
-// Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-
-
-// Over ride request header
-app.use(methodOverride());
-
+var compress = require('compression');
 // Should be placed before express.static
 app.use(compress({
   filter: function(req, res) {
@@ -67,23 +58,18 @@ app.use(compress({
 // Static files locations
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Body parser
+var body = require('../config/body.js');
+
 // Session
 var session = require('../config/session.js')(app, passport)
 
-// security
+// Security
 var security = require('../config/security.js');
 
-// =============================================================================
 // Routes in order of priority
-// =============================================================================
-
-// Order is important!
 var users = require('./users/users.routes.js')(app, passport);
 var core = require('./core/core.routes.js')(app, passport);
 
-
-// =============================================================================
 // Expose app
-// =============================================================================
-
 module.exports = app;
