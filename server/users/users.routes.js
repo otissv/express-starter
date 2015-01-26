@@ -11,10 +11,11 @@ var user = require ('./users.controller.js');
 
 
 // =============================================================================
-// Methods
+// Routes in order of priority
 // =============================================================================
 
 module.exports = function userRoutes (app) {
+
   app.route('/users/:user')
     .get(user.findUser)
     .put(user.updateUser)

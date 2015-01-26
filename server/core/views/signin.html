@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{{title}}</h1>
   <form action='/signin', method='post'>
-    <input type='hidden' name='_csrf' value={{csrf}} />
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
     <div>
       <label>Username:</label>
       <input type='text', name='username' />

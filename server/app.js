@@ -28,8 +28,11 @@ var passport = require('passport');
 var compress = require('compression');
 var flash = require('req-flash');
 var swig = require('swig');
-var credentials = require('../.credentials.js');
+var secret = require('../config/secret.js');
 var methodOverride = require('method-override');
+var store = require('mongoose-session')(mongoose);
+var csrf = require('csurf');
+var helmet = require('helmet');
 
 // Bootstrap passport config
 require('./users/user.auth.js')(passport);
@@ -65,6 +68,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Over ride request header
 app.use(methodOverride());
+
 // Should be placed before express.static
 app.use(compress({
   filter: function(req, res) {
@@ -82,8 +86,8 @@ app.use(cookieParser());
 
 // Session
 app.use(session({
-  secret: credentials.sessionSecret,
-  store: require('mongoose-session')(mongoose),
+  secret: secret.session,
+  store: store,
   saveUninitialized: true,
   resave: true
 }));
@@ -97,8 +101,56 @@ app.use(passport.session());
 // Flash messages
 app.use(flash({ locals: 'flash' }));
 
+
+// =============================================================================
+// Security
+// =============================================================================
+
 // Disable x-powered-by
 app.disable('x-powered-by');
+
+// Cross-site request forgery
+app.use(csrf());
+app.use(function(req, res, next) {
+  res.locals._csrfToken = req.csrfToken();
+  next();
+});
+
+
+// Content Security Policy
+app.use(helmet.csp({
+  defaultSrc: ["'self'"],
+  scriptSrc: ['*.google-analytics.com'],
+  styleSrc: ["'unsafe-inline'"],
+  imgSrc: ['*.google-analytics.com'],
+  connectSrc: ["'none'"],
+  fontSrc: [],
+  objectSrc: [],
+  mediaSrc: [],
+  frameSrc: []
+}));
+
+// X-XSS-Protection
+app.use(helmet.xssFilter());
+
+// X-Frame: Deny
+app.use(helmet.xframe());
+
+// Strict-Transport-Security
+app.use(helmet.hsts({
+  maxAge: 7776000000,
+  includeSubdomains: true
+}));
+
+// Sniff mimetypes
+app.use(helmet.noSniff());
+
+// IE, restrict untrusted HTML
+app.use(helmet.ieNoOpen());
+
+// enforce https
+// app.use(require('express-enforces-ssl'));
+
 
 // =============================================================================
 // Routes
@@ -108,18 +160,6 @@ app.disable('x-powered-by');
 var user = require('./users/users.routes.js')(app, passport);
 var core = require('./core/core.routes.js')(app, passport);
 
-// 404 catch-all handler
-app.use(function(req, res, next) {
-  res.status(404);
-  res.render('404');
-});
-
-// 505 catch-all handler
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(505);
-  res.render('505');
-});
 
 // =============================================================================
 // Expose app

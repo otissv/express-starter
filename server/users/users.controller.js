@@ -116,3 +116,13 @@ exports.signoutUser = function(req, res) {
   req.logout();
   res.redirect('/');
 };
+
+exports.requiresLogin = function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.send(401, {
+      message: 'User is not logged in'
+    });
+  }
+  
+  next();
+};
