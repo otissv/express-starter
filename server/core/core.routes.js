@@ -18,4 +18,22 @@ var users = require('../users/users.controller.js');
 module.exports = function coreErrorStatus (app) {
   app.route('/home').get(users.requiresLogin, core.home);
   app.route('/').get(core.index);
+
+
+  // =============================================================================
+  // Error Handler
+  // =============================================================================
+
+  // 404 catch-all handler
+  app.use(function(req, res, next) {
+    res.status(404);
+    res.render('404');
+  });
+
+  // 500 catch-all handler
+  app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500);
+    res.render('500');
+  });
 };
