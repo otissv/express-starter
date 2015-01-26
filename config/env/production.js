@@ -16,5 +16,9 @@ module.exports = {
   port: all.port,
   baseURL: 'http://www.yourwebsite.com',
   title:  all.title,
-  db: all.db
+  db: {
+    uri: all.db.uri,
+    opts: all.db.opts
+  }
+  session: secret.session,
 };

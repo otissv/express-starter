@@ -6,7 +6,7 @@
 // =============================================================================
 // Dependencies.
 // =============================================================================
-var secret = require('../.credentials.js');
+var secret = require('../secret.js');
 
 // =============================================================================
 // Configuration
@@ -16,7 +16,7 @@ module.exports = {
   description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
   keywords: 'MongoDB, Express, AngularJS, Node.js',
   port: process.env.PORT || 3000,
-  secret: secret.sessionSecret,
+  session: secret.session,
   db: {
     uri: 'mongodb://127.0.0.1:27017/test',
     opts: {

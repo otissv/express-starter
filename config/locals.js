@@ -8,10 +8,10 @@ module.exports = function(app) {
   var config;
   switch (app.get('env')) {
     case 'development':
-      config = require('../config/development.js');
+      config = require('././env/development.js');
       break;
     case 'production':
-      config = require('../config/production.js');
+      config = require('./env/production.js');
       break;
     default:
       throw new Error('Unknow exection Enviorment:');
