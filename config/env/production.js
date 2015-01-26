@@ -20,5 +20,5 @@ module.exports = {
     uri: all.db.uri,
     opts: all.db.opts
   }
-  session: secret.session,
+  session: all.session,
 };

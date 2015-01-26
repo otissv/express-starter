@@ -1,8 +1,12 @@
 // config/locals.js
 
-// local application variable
+// Local application variable
 
 'use strict';
+
+// =======================================================================
+// Methods
+// =======================================================================
 
 module.exports = function(app) {
   var config;
@@ -21,4 +25,5 @@ module.exports = function(app) {
   app.locals.title = config.title;
   app.locals.description = config.description;
   app.locals.db = config.db;
+  app.locals.session = config.session;
 };

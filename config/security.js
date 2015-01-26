@@ -1,14 +1,21 @@
 //  config/env/security.js
 
+// Appplication secruity
+
+'use strict';
+
+// =============================================================================
+// Dependencies
+// =============================================================================
 var csrf = require('csurf');
 var helmet = require('helmet');
 
+
 // =============================================================================
-// Security
+// Methods
 // =============================================================================
 
 module.exports = function (app) {
-
 
   // Disable x-powered-by
   app.disable('x-powered-by');

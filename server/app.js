@@ -12,7 +12,9 @@ var express = require('express');
 var app = express();
 var configLocals = require('../config/locals.js')(app);
 var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.opts);
-
+var mongoose = require('mongoose');
+var passport = require('passport');
+var secret = require('../config/secret.js');
 
 // =============================================================================
 // Middleware
@@ -20,17 +22,12 @@ var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.o
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var passport = require('passport');
+
 var compress = require('compression');
-var flash = require('req-flash');
 var swig = require('swig');
-var secret = require('../config/secret.js');
+
 var methodOverride = require('method-override');
-var store = require('mongoose-session')(mongoose);
 
 
 // Bootstrap passport config
@@ -79,37 +76,19 @@ app.use(compress({
 // Static files locations
 app.use(express.static(path.join(__dirname, '../public')));
 
-
-// Read cookies (needed for auth)
-app.use(cookieParser());
-
 // Session
-app.use(session({
-  secret: secret.session,
-  store: store,
-  saveUninitialized: true,
-  resave: true
-}));
-
-// Initialise authentication
-app.use(passport.initialize());
-
-// persistent login sessions
-app.use(passport.session());
-
-// Flash messages
-app.use(flash({ locals: 'flash' }));
+var session = require('../config/session.js')(app, passport)
 
 // security
-require('../config/security.js');
+var security = require('../config/security.js');
 
 // =============================================================================
 // Routes in order of priority
 // =============================================================================
 
 // Order is important!
-require('./users/users.routes.js')(app, passport);
-require('./core/core.routes.js')(app, passport);
+var users = require('./users/users.routes.js')(app, passport);
+var core = require('./core/core.routes.js')(app, passport);
 
 
 // =============================================================================

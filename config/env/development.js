@@ -16,5 +16,6 @@ module.exports = {
   port: all.port,
   baseURL: 'http://localhost:' + all.port,
   title:  all.title + '- Development Environment',
-  db: all.db
+  db: all.db,
+  session: all.session,
 };
