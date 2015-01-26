@@ -43,9 +43,10 @@ var session = require('../config/session.js')(app, passport);
 // Security
 var security = require('../config/security.js')(app);
 
-// Routes in order of priority
+// Order is important!
 var user = require('./users/users.routes.js')(app, passport);
 var core = require('./core/core.routes.js')(app, passport);
+
 
 // Expose app
 module.exports = app;
