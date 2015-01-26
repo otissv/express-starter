@@ -21,7 +21,7 @@ var secret = require('../config/secret.js');
 // =============================================================================
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+
 var bodyParser = require('body-parser');
 
 var compress = require('compression');
@@ -30,8 +30,11 @@ var swig = require('swig');
 var methodOverride = require('method-override');
 
 
-// Bootstrap passport config
-require('./users/user.auth.js')(passport);
+// Authentication
+var auth = require('./users/user.auth.js')(passport);
+
+// Application logger
+var logger = require('../config/loger.js');
 
 // View engine setup
 app.engine('html', swig.renderFile);
@@ -42,18 +45,6 @@ app.set('views', path.join(__dirname, './core/views'));
 
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-
-// Application logger
-switch (app.get('env')) {
-  case 'development':
-    app.use(require('morgan')('dev'));
-    break;
-  case 'production':
-    app.use(require('experss-logger')({
-      path: __dirname + '/log/requests.log'
-    }));
-    break;
-}
 
 // Parse application/json
 app.use(bodyParser.json());
