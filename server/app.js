@@ -32,20 +32,11 @@ var auth = require('./users/user.auth.js')(passport);
 // Application logger
 var logger = require('../config/logger.js');
 
-
-var swig = require('swig');
-
-
-// View engine setup
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
-
-// Location of view folders
-app.set('views', path.join(__dirname, './core/views'));
-
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
+// Veiw templating
+var views = require('../config/views.js')(app, path)
 var compress = require('compression');
 // Should be placed before express.static
 app.use(compress({

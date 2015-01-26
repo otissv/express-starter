@@ -1,26 +1,23 @@
-// config/body.js
+// config/views.js
 
-// Body parser
+// View templating
 
 'use strict';
 
 // =============================================================================
 // Dependencies
 // =============================================================================
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
+var swig = require('swig');
 
 // =============================================================================
 // Methods
 // =============================================================================
 
-module.exports = function(app) {
-  // Parse application/json
-  app.use(bodyParser.json());
+module.exports = function(app, path) {
+  // View engine setup
+  app.engine('html', swig.renderFile);
+  app.set('view engine', 'html');
 
-  // Parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({ extended: false }));
-
-  // Over ride request header
-  app.use(methodOverride());
+  // Location of view folders
+  app.set('views', path.join(__dirname, '../server/core/views/'));
 };
