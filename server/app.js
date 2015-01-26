@@ -12,7 +12,6 @@ var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var favicon = require('serve-favicon');
-var path = require('path');
 
 // =============================================================================
 // Configuration
@@ -36,18 +35,10 @@ var logger = require('../config/logger.js');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Veiw templating
-var views = require('../config/views.js')(app, path)
-var compress = require('compression');
-// Should be placed before express.static
-app.use(compress({
-  filter: function(req, res) {
-    return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
-  },
-  level: 9
-}));
+var views = require('../config/views.js')(app)
 
-// Static files locations
-app.use(express.static(path.join(__dirname, '../public')));
+// Static files
+var staticFiles = require('../config/staticFiles.js')(app, express)
 
 // Body parser
 var body = require('../config/body.js');

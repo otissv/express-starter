@@ -1,4 +1,4 @@
-//  config/env/security.js
+//  config/security.js
 
 // Appplication secruity
 
@@ -9,7 +9,6 @@
 // =============================================================================
 var csrf = require('csurf');
 var helmet = require('helmet');
-
 
 // =============================================================================
 // Methods

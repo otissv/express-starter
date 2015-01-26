@@ -1,4 +1,4 @@
-// config/views.js
+// config/staticFiles.js
 
 // View templating
 
@@ -7,18 +7,21 @@
 // =============================================================================
 // Dependencies
 // =============================================================================
-var swig = require('swig');
+var compress = require('compression');
 var path = require('path');
 
 // =============================================================================
 // Methods
 // =============================================================================
 
-module.exports = function(app) {
-  // View engine setup
-  app.engine('html', swig.renderFile);
-  app.set('view engine', 'html');
+module.exports = function(app, express) {
+  app.use(compress({
+    filter: function(req, res) {
+      return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
+    },
+    level: 9
+  }));
 
-  // Location of view folders
-  app.set('views', path.join(__dirname, '../server/core/views/'));
+  // Static files locations
+  app.use(express.static(path.join(__dirname, '../public')));
 };
