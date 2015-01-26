@@ -1,13 +1,20 @@
-// database/connection.js
+// conf/database.js
 
 // Database connection
 
 'use strict';
+
+// =============================================================================
+// Dependencies
+// =============================================================================
 var mongoose = require( 'mongoose');
 
-module.exports = function(dbURI, dbOpts) {
-  // Bring Mongoose into the project
 
+// =============================================================================
+// Methods
+// =============================================================================
+
+module.exports = function(dbURI, dbOpts) {
 
   // Create the database connection
   mongoose.connect(dbURI, dbOpts);

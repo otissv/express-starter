@@ -1,5 +1,7 @@
 // config/session.js
 
+// Application session
+
 'use strict';
 
 // =======================================================================
@@ -9,14 +11,14 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var flash = require('req-flash');
 var mongoose = require( 'mongoose');
-
+var store = require('mongoose-session')(mongoose);
 
 // =======================================================================
 // Session
 // =======================================================================
 
 module.exports = function (app, passport) {
-  var store = require('mongoose-session')(mongoose)
+  
   // Read cookies (needed for auth)
   app.use(cookieParser());
 
@@ -36,4 +38,4 @@ module.exports = function (app, passport) {
 
   // Flash messages
   app.use(flash({ locals: 'flash' }));
-}
+};

@@ -38,7 +38,7 @@ var config = {
   scripts: [
     './gulpfile.js',
     './public/**/*.js',
-    './config/*.js',
+    './config/**/*.js',
     './database/*.js',
     './server/*.js',
     './lib/*.js',

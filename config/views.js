@@ -1,6 +1,6 @@
 // config/views.js
 
-// View templating
+// Application view templating
 
 'use strict';
 

@@ -1,6 +1,6 @@
 // config/staticFiles.js
 
-// View templating
+// Application Static files
 
 'use strict';
 
@@ -23,5 +23,5 @@ module.exports = function(app, express) {
   }));
 
   // Static files locations
-  app.use(express.static(path.join(__dirname, '../public')));
+  app.use(express.static(path.join(__dirname, '../public/')));
 };

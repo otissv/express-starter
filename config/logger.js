@@ -1,6 +1,6 @@
 // config/logger.js
 
-// Application logger// Application logger
+// Application logger
 
 'use strict';
 
@@ -18,5 +18,5 @@ module.exports = function(app) {
         path: __dirname + '/log/requests.log'
       }));
       break;
-  }
+    }
 };

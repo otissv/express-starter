@@ -5,52 +5,46 @@
 'use strict';
 
 // =============================================================================
-// Dependencies
+// Configuration
 // =============================================================================
 
 var express = require('express');
-var mongoose = require('mongoose');
+var app = express();
+var locals = require('../config/locals.js')(app);
+var db = require('../config/database.js')(app.locals.db.uri, app.locals.db.opts);
 var passport = require('passport');
 var favicon = require('serve-favicon');
 
 // =============================================================================
-// Configuration
+// Middleware
 // =============================================================================
 
-var app = express();
-
-// Applicaion local variables
-var locals = require('../config/locals.js')(app);
-
-// Database connection
-var db = require('../database/connection.js')(app.locals.db.uri, app.locals.db.opts);
-
-// Authentication
+// Bootstrap passport config
 var auth = require('./users/user.auth.js')(passport);
 
-// Application logger
-var logger = require('../config/logger.js');
+// View engine setup
+var views = require('../config/views.js')(app);
 
 // Uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
-// Veiw templating
-var views = require('../config/views.js')(app)
+// Application logger
+var logger = require('../config/logger.js')(app);
+
+// Body paser
+var body = require('../config/body.js')(app);
 
 // Static files
-var staticFiles = require('../config/staticFiles.js')(app, express)
-
-// Body parser
-var body = require('../config/body.js');
+var staticFiles = require('../config/staticFiles.js')(app, express);
 
 // Session
-var session = require('../config/session.js')(app, passport)
+var session = require('../config/session.js')(app, passport);
 
 // Security
-var security = require('../config/security.js');
+var security = require('../config/security.js')(app);
 
 // Routes in order of priority
-var users = require('./users/users.routes.js')(app, passport);
+var user = require('./users/users.routes.js')(app, passport);
 var core = require('./core/core.routes.js')(app, passport);
 
 // Expose app

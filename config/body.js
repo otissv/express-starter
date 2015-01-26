@@ -20,7 +20,8 @@ module.exports = function(app) {
 
   // Parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: false }));
-
+  
   // Over ride request header
   app.use(methodOverride());
+  // Should be placed before express.static
 };

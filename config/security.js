@@ -28,11 +28,11 @@ module.exports = function (app) {
 
   // Content Security Policy
   app.use(helmet.csp({
-    defaultSrc: ["'self'"],
+    defaultSrc: ['"self"'],
     scriptSrc: ['*.google-analytics.com'],
-    styleSrc: ["'unsafe-inline'"],
+    styleSrc: ['"unsafe-inline"'],
     imgSrc: ['*.google-analytics.com'],
-    connectSrc: ["'none'"],
+    connectSrc: ['"none"'],
     fontSrc: [],
     objectSrc: [],
     mediaSrc: [],
@@ -59,4 +59,4 @@ module.exports = function (app) {
 
   // enforce https
   // app.use(require('express-enforces-ssl'));
-}
+};
