@@ -82,7 +82,7 @@ exports.processSigningUpUser = function(req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.redirect('/home');
+      return res.redirect('/');
     });
   })(req, res, next);
 };
@@ -107,7 +107,7 @@ exports.processSigningInUser = function(req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.redirect('/home');
+      return res.redirect('/');
     });
   })(req, res, next);
 };
@@ -117,12 +117,7 @@ exports.signoutUser = function(req, res) {
   res.redirect('/');
 };
 
-exports.requiresLogin = function(req, res, next) {
-  if (!req.isAuthenticated()) {
-    return res.send(401, {
-      message: 'User is not logged in'
-    });
-  }
-
-  next();
+exports.isAuthenticated = function(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect(302, '/signin');
 };

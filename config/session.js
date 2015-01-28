@@ -18,7 +18,7 @@ var store = require('mongoose-session')(mongoose);
 // =======================================================================
 
 module.exports = function (app, passport) {
-  
+
   // Read cookies (needed for auth)
   app.use(cookieParser());
 
@@ -38,4 +38,9 @@ module.exports = function (app, passport) {
 
   // Flash messages
   app.use(flash({ locals: 'flash' }));
+
+  app.use(function (req, res, next) {
+    res.locals.login = req.user;
+    next();
+  });
 };
