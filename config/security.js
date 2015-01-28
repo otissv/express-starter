@@ -27,17 +27,19 @@ module.exports = function (app) {
   });
 
   // Content Security Policy
-  app.use(helmet.csp({
-    defaultSrc: ['"self"'],
-    scriptSrc: ['*.google-analytics.com'],
-    styleSrc: ['"unsafe-inline"'],
-    imgSrc: ['*.google-analytics.com'],
-    connectSrc: ['"none"'],
-    fontSrc: [],
-    objectSrc: [],
-    mediaSrc: [],
-    frameSrc: []
-  }));
+  if (app.get('env' !== 'development'))  {
+    app.use(helmet.csp({
+      defaultSrc: ['"self"'],
+      scriptSrc: ['*.google-analytics.com'],
+      styleSrc: ['"unsafe-inline"'],
+      imgSrc: ['*.google-analytics.com'],
+      connectSrc: ['"none"'],
+      fontSrc: [],
+      objectSrc: [],
+      mediaSrc: [],
+      frameSrc: []
+    }));
+  }
 
   // X-XSS-Protection
   app.use(helmet.xssFilter());
