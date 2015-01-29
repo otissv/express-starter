@@ -9,7 +9,6 @@
 // =============================================================================
 var swig = require('swig');
 var path = require('path');
-
 // =============================================================================
 // Methods
 // =============================================================================
@@ -20,5 +19,6 @@ module.exports = function(app) {
   app.set('view engine', 'html');
 
   // Location of view folders
-  app.set('views', path.join(__dirname, '../../backend/core/views/'));
+  app.set('views', path.join(__dirname, '../../backend/views/'));
+
 };
