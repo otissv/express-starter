@@ -1,0 +1,28 @@
+<!-- backend/core/views/layout.html -->
+
+<!-- Layout error page -->
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{{title}}{% endblock %}</title>
+
+  {% block head %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href="{{baseULR}}/stylesheets/style.css">
+  {% endblock %}
+  </head>
+  <body>
+    {% if flash.message %}
+      <div class="alert alert-{{flash.type}} alert-dismissible">
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{flash.tilte}}</strong>{{flash.message}}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </body>
+  </html>
